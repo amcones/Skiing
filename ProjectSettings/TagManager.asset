@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Barries
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 355492705
+    locked: 0
+  - name: BackgroundAddtion
+    uniqueID: 1659044089
+    locked: 0
+  - name: Ground
+    uniqueID: 1842186621
+    locked: 0
+  - name: Player
+    uniqueID: 3628002833
+    locked: 0
+  - name: Frontground
+    uniqueID: 2265450509
+    locked: 0
+  - name: FrontgroundAddtion
+    uniqueID: 1603800091
+    locked: 0
