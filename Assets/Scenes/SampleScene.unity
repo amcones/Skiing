@@ -135,9 +135,9 @@ GameObject:
   - component: {fileID: 33673532}
   - component: {fileID: 33673531}
   - component: {fileID: 33673530}
+  - component: {fileID: 33673536}
   - component: {fileID: 33673534}
   - component: {fileID: 33673535}
-  - component: {fileID: 33673536}
   m_Layer: 0
   m_Name: car1
   m_TagString: Player
@@ -515,7 +515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetCamera: {fileID: 519420031}
   TargetPosition: {fileID: 33673533}
-  Offset: {x: 0, y: -2}
+  CameraMoveSmooth: 0.3
 --- !u!4 &2120885652
 Transform:
   m_ObjectHideFlags: 0

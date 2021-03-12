@@ -6,13 +6,19 @@ public class CameraFollow : MonoBehaviour
 {
     public Camera TargetCamera;
     public Transform TargetPosition;
-    public Vector2 Offset;
+    public float CameraMoveSmooth;
+
+    private Transform CameraTransform;
+
+    private void Start()
+    {
+        CameraTransform = TargetCamera.transform;
+    }
+
     private void Update()
     {
-        Vector3 targetPosition = TargetPosition.position;
-        targetPosition.x += Offset.x;
-        targetPosition.y += Offset.y;
-        targetPosition.z = TargetCamera.transform.position.z;
-        TargetCamera.gameObject.transform.position = targetPosition;
+        Vector2 targetPosition = TargetPosition.position;
+        targetPosition = Vector2.Lerp(CameraTransform.position, targetPosition, CameraMoveSmooth * Time.deltaTime);
+        CameraTransform.position = new Vector3(targetPosition.x, targetPosition.y, CameraTransform.position.z);
     }
 }
