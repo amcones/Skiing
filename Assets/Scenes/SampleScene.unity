@@ -456,20 +456,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TestObject: {fileID: 33673529}
-  GeneratorGrid: {fileID: 1628172924}
+  GeneratorGrid: {fileID: 1628172926}
   ChunkPrefab: {fileID: 3323499547670862416, guid: f66e6fdb12c2c724e9ddcf5968b59c6e, type: 3}
   GroundFileTile: {fileID: 11400000, guid: ee0b6a80fd033184ba83ded58397a804, type: 2}
   BarriesPrefabs: []
+  InitializeChunkNum: 10
   ChunkSizeConfig: {x: 80, y: 60}
   DistanceEdge: 20
-  DistanceDel: 2
+  DistanceDel: 1
   HitLayer:
     serializedVersion: 2
     m_Bits: 64
   RayDirection: {x: 0, y: 0, z: 1}
   RayDistance: 10
   DrawChunk: 1
-  Chunks: []
+  mapChunkList:
+    usingChunks: []
+    unuseChunks: []
 --- !u!4 &1948842423
 Transform:
   m_ObjectHideFlags: 0
@@ -515,7 +518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetCamera: {fileID: 519420031}
   TargetPosition: {fileID: 33673533}
-  CameraMoveSmooth: 0.3
+  CameraMoveSmooth: 10
 --- !u!4 &2120885652
 Transform:
   m_ObjectHideFlags: 0
