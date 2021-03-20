@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MapChunk : MonoBehaviour
 {
+    private static long GenerateCount = 0;
+
     public Bounds bounds;
 
     [Header("Debug用区块显示")]
@@ -13,6 +15,8 @@ public class MapChunk : MonoBehaviour
     
     private static readonly Vector2Int[] drawLineElem = { new Vector2Int(0, 1), new Vector2Int(1, 3), new Vector2Int(3, 2), new Vector2Int(2, 0) };
 
+    private long id = -1;
+    public long ID => id;
     private void Start()
     {
         LineRenderer.positionCount = 5;
@@ -40,6 +44,12 @@ public class MapChunk : MonoBehaviour
     /// <param name="transformParent"></param>
     public void InitializeChunk(Vector2 boundSize, Vector2 center, Transform transformParent = null)
     {
+        if(id == -1)
+        {
+            id = GenerateCount;
+            GenerateCount++;
+        }
+
         if (transformParent != null)
             transform.SetParent(transformParent);
 
@@ -73,6 +83,5 @@ public class MapChunk : MonoBehaviour
             LineRenderer.SetPosition(index, vertex4Rect[index] + bounds.center);
         }
         LineRenderer.SetPosition(4, vertex4Rect[0] + bounds.center);
-
     }
 }

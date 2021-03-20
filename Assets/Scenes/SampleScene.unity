@@ -383,6 +383,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1240483172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1240483173}
+  m_Layer: 0
+  m_Name: ObstacleParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1240483173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240483172}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1628172924
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,20 +489,32 @@ MonoBehaviour:
   GeneratorGrid: {fileID: 1628172926}
   ChunkPrefab: {fileID: 3323499547670862416, guid: f66e6fdb12c2c724e9ddcf5968b59c6e, type: 3}
   GroundFileTile: {fileID: 11400000, guid: ee0b6a80fd033184ba83ded58397a804, type: 2}
-  BarriesPrefabs: []
   InitializeChunkNum: 10
   ChunkSizeConfig: {x: 80, y: 60}
   DistanceEdge: 20
   DistanceDel: 1
+  ChunkInitializePosition: {x: 1000, y: 1000}
+  DrawChunk: 1
+  BarriesPrefabs:
+  - {fileID: 440755645125262380, guid: 70b64dbee9feff945ad59e653cefdc4d, type: 3}
+  - {fileID: 933156207925819134, guid: e120f7dfae64f844ca563cfb172feeca, type: 3}
+  - {fileID: 8952865093326928299, guid: 2d05082a24c62884b928b7b3ff5e0c1c, type: 3}
+  - {fileID: 7070660566001603459, guid: 8e178f20547b65d41b3f54dff9ee7409, type: 3}
+  ObstacleParent: {fileID: 1240483173}
+  ObstacleGenerateNumberForElem: 25
+  ObstacleInitilizePosition: {x: 1000, y: 1000}
+  SingleChunkObstacleMax: 15
   HitLayer:
     serializedVersion: 2
     m_Bits: 64
   RayDirection: {x: 0, y: 0, z: 1}
   RayDistance: 10
-  DrawChunk: 1
   mapChunkList:
     usingChunks: []
     unuseChunks: []
+  mapObstacleList:
+    usingObstacle: []
+    unuseObstacle: []
 --- !u!4 &1948842423
 Transform:
   m_ObjectHideFlags: 0

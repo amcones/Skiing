@@ -16,23 +16,45 @@ public class MapChunkList
 
     public MapChunkList(int chunkNumber)
     {
-        usingChunks = new List<MapChunk>();
-        unuseChunks = new List<MapChunk>();
         allChunkNumber = chunkNumber;
+        usingChunks = new List<MapChunk>(allChunkNumber);
+        unuseChunks = new List<MapChunk>(allChunkNumber);
     }
 
-    public void InitializeList(GameObject chunkPrefab, Transform parentObject, Vector2 boundSize)
+    public void InitializeList(GameObject chunkPrefab, Vector2 genPosition, Transform parentObject, Vector2 boundSize)
     {
         chunkSizeConfig = boundSize;
         for (int genNum = allChunkNumber; genNum > 1; genNum--)
         {
-            MapChunk mapChunk = CreateChunk(chunkPrefab, parentObject);
+            MapChunk mapChunk = CreateChunk(chunkPrefab, genPosition, parentObject);
             mapChunk.enabled = false;
             unuseChunks.Add(mapChunk);
         }
-        usingChunks.Add(CreateChunk(chunkPrefab, parentObject));
+        usingChunks.Add(CreateChunk(chunkPrefab, Vector2.zero, parentObject));
     }
 
+    #region 区块生成相关方法
+    /// <summary>
+    /// 创建一个区块实例
+    /// </summary>
+    /// <param name="prefab"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    MapChunk CreateChunk(GameObject prefab, Vector2 position, Transform parent)
+    {
+        GameObject newChunk = GameObject.Instantiate(prefab);
+        if (newChunk is null)
+            throw new System.NullReferenceException();
+
+        MapChunk newChunkMap = newChunk.GetComponent<MapChunk>();
+        newChunkMap.InitializeChunk(chunkSizeConfig, position, parent);
+        return newChunkMap;
+    }
+
+    /// <summary>
+    /// 简单地获取一个区块
+    /// </summary>
+    /// <returns></returns>
     public MapChunk GetUnuseChunk()
     {
         if (unuseChunks.Count > 0)
@@ -45,7 +67,12 @@ public class MapChunkList
         return null;
     }
 
-    public bool AddUseChunk(Vector2 center)
+    /// <summary>
+    /// 新增一个区块到使用区块的List中，位置将设置为传入的参数
+    /// </summary>
+    /// <param name="center"></param>
+    /// <returns></returns>
+    public MapChunk AddUseChunk(Vector2 center)
     {
         if (!IsCreatedChunk(center))
         {
@@ -54,36 +81,14 @@ public class MapChunkList
             {
                 newChunk.InitializeChunk(chunkSizeConfig, center);
                 UsingChunks.Add(newChunk);
-                return true;
+                return newChunk;
             }
         }
-        return false;
-    }
-
-    public bool AddUnuseChunk(MapChunk mapChunk)
-    {
-        if (unuseChunks.Contains(mapChunk))
-            return false;
-        unuseChunks.Add(mapChunk);
-        return true;
-    }
-
-    public void CleanUpUnuseChunk()
-    {
-        foreach(var chunk in unuseChunks)
-        {
-            Transform[] childTransform = chunk.gameObject.GetComponentsInChildren<Transform>();
-            foreach(var child in childTransform)
-            {
-                if (child != chunk.gameObject.transform)
-                    GameObject.Destroy(child.gameObject);
-            }
-            chunk.enabled = false;
-        }
+        return null;
     }
 
     /// <summary>
-    /// �жϴ˴��Ƿ�����������
+    /// 判断此处是否生成了区块
     /// </summary>
     /// <param name="center"></param>
     /// <returns></returns>
@@ -91,20 +96,32 @@ public class MapChunkList
     {
         foreach (MapChunk chunk in usingChunks)
         {
-            if ((Vector2)chunk.bounds.center == center)
+            if (center == (Vector2)chunk.bounds.center)
                 return true;
         }
         return false;
     }
+    #endregion
 
-    MapChunk CreateChunk(GameObject prefab, Transform parent)
+    /// <summary>
+    /// 移除指定区块，如果未使用区块的List已经存在则返回false，否则返回true
+    /// </summary>
+    /// <param name="mapChunk"></param>
+    /// <returns></returns>
+    public bool AddUnuseChunk(MapChunk mapChunk)
     {
-        GameObject newChunk = GameObject.Instantiate(prefab);
-        if (newChunk is null)
-            throw new System.NullReferenceException();
+        if (unuseChunks.Contains(mapChunk))
+            return false;
+        unuseChunks.Add(mapChunk);
+        mapChunk.enabled = false;
+        return true;
+    }
 
-        MapChunk newChunkMap = newChunk.GetComponent<MapChunk>();
-        newChunkMap.InitializeChunk(chunkSizeConfig, Vector2.zero, parent);
-        return newChunkMap;
+    public void CleanUpList()
+    {
+        foreach(var chunk in unuseChunks)
+        {
+            usingChunks.Remove(chunk);
+        }
     }
 }
