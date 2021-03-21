@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class MapChunk : MonoBehaviour
 {
-    public Bounds boundSize;
+    private static long GenerateCount = 0;
+
+    public Bounds bounds;
 
     [Header("Debug用区块显示")]
     public LineRenderer LineRenderer;
@@ -13,6 +15,8 @@ public class MapChunk : MonoBehaviour
     
     private static readonly Vector2Int[] drawLineElem = { new Vector2Int(0, 1), new Vector2Int(1, 3), new Vector2Int(3, 2), new Vector2Int(2, 0) };
 
+    private long id = -1;
+    public long ID => id;
     private void Start()
     {
         LineRenderer.positionCount = 5;
@@ -22,7 +26,6 @@ public class MapChunk : MonoBehaviour
 
     private void Update()
     {
-        boundSize.center = transform.position;
         if (ShowChunkLine)
         {
             DrawRect();
@@ -31,6 +34,28 @@ public class MapChunk : MonoBehaviour
         {
             LineRenderer.enabled = false;
         }
+    }
+
+    /// <summary>
+    /// 使用区域大小、中心来初始化区块，可设置其父物体
+    /// </summary>
+    /// <param name="boundSize"></param>
+    /// <param name="center"></param>
+    /// <param name="transformParent"></param>
+    public void InitializeChunk(Vector2 boundSize, Vector2 center, Transform transformParent = null)
+    {
+        if(id == -1)
+        {
+            id = GenerateCount;
+            GenerateCount++;
+        }
+
+        if (transformParent != null)
+            transform.SetParent(transformParent);
+
+        bounds.size = boundSize;
+        bounds.center = center;
+        transform.position = center;
     }
 
     public void SetShowChunkLine(bool isShow)
@@ -42,22 +67,21 @@ public class MapChunk : MonoBehaviour
     {
         LineRenderer.enabled = true;
         List<Vector3> vertex4Rect = new List<Vector3>();
-        float x = boundSize.extents.x;
-        float y = boundSize.extents.y;
+        float x = bounds.extents.x;
+        float y = bounds.extents.y;
         vertex4Rect.Add(new Vector3(x, y));
         vertex4Rect.Add(new Vector3(x, -y));
         vertex4Rect.Add(new Vector3(-x, -y));
         vertex4Rect.Add(new Vector3(-x, y));
         foreach (Vector2Int lineElem in drawLineElem)
         {
-            Debug.DrawLine(vertex4Rect[lineElem.x] + boundSize.center, vertex4Rect[lineElem.y] + boundSize.center);
+            Debug.DrawLine(vertex4Rect[lineElem.x] + bounds.center, vertex4Rect[lineElem.y] + bounds.center);
         }
 
         for(int index = 0;index < 4;index ++)
         {
-            LineRenderer.SetPosition(index, vertex4Rect[index] + boundSize.center);
+            LineRenderer.SetPosition(index, vertex4Rect[index] + bounds.center);
         }
-        LineRenderer.SetPosition(4, vertex4Rect[0] + boundSize.center);
-
+        LineRenderer.SetPosition(4, vertex4Rect[0] + bounds.center);
     }
 }
