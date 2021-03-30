@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class MapChunk : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class MapChunk : MonoBehaviour
 
     private long id = -1;
     public long ID => id;
+
+    private TileBase grondTile;
+    private Tilemap tilemap;
     private void Start()
     {
         LineRenderer.positionCount = 5;
@@ -42,7 +46,7 @@ public class MapChunk : MonoBehaviour
     /// <param name="boundSize"></param>
     /// <param name="center"></param>
     /// <param name="transformParent"></param>
-    public void InitializeChunk(Vector2 boundSize, Vector2 center, Transform transformParent = null)
+    public void InitializeChunk(Vector2 boundSize, Vector2 center, TileBase grondTile = null, Transform transformParent = null)
     {
         if(id == -1)
         {
@@ -56,6 +60,34 @@ public class MapChunk : MonoBehaviour
         bounds.size = boundSize;
         bounds.center = center;
         transform.position = center;
+
+        if(grondTile != null)
+        {
+            this.grondTile = grondTile;
+            if(tilemap == null)
+                tilemap = gameObject.GetComponent<Tilemap>();
+            FillChunk();
+        }
+    }
+
+    public void FillChunk()
+    {
+        // 获取左下角的位置
+        Vector2Int fillPosStart = new Vector2Int(-(int)bounds.extents.x, -(int)bounds.extents.y);
+        // 获取宽度
+        int width = (int)bounds.size.x;
+
+        //获取高度
+        int height = (int)bounds.size.y;
+
+        // 从左下角，填充高度X宽度大小的区域
+        for (int xPos = 0; xPos < width; xPos++)
+        {
+            for (int yPos = 0; yPos < height; yPos++)
+            {
+                tilemap.SetTile(new Vector3Int(fillPosStart.x + xPos, fillPosStart.y + yPos, 0), grondTile);
+            }
+        }
     }
 
     public void SetShowChunkLine(bool isShow)

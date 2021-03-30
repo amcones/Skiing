@@ -53,16 +53,8 @@ public class MapChunkGenerator : MonoBehaviour
     [Tooltip("每个区块生成障碍物的数量最大值")]
     [Range(0, 20)] public int SingleChunkObstacleMax;
 
-    [Header("检查测试物体（弃用）")]
-    [Tooltip("指定碰撞的层")]
-    public LayerMask HitLayer;
-
-    [Tooltip("指定射线方向")]
-    public Vector3 RayDirection;
-
-    [Tooltip("指定射线检测距离")]
-    public float RayDistance = 10f;
-
+    [Tooltip("障碍物粒度")]
+    [Range(0.0f, 1.0f)]public float Granularity = 0.5f;
     [SerializeField] MapChunkList mapChunkList;
     [SerializeField] MapObstacleList mapObstacleList;
 
@@ -82,10 +74,10 @@ public class MapChunkGenerator : MonoBehaviour
     void Start()
     {
         mapChunkList = new MapChunkList(InitializeChunkNum);
-        mapChunkList.InitializeList(ChunkPrefab, ChunkInitializePosition, GeneratorGrid, ChunkSizeConfig);
+        mapChunkList.InitializeList(ChunkPrefab, ChunkInitializePosition, GeneratorGrid, ChunkSizeConfig, GroundFileTile);
 
-        FillAllChunk(mapChunkList.UsingChunks);
-        FillAllChunk(mapChunkList.UnuseChunks);
+        //FillAllChunk(mapChunkList.UsingChunks);
+        //FillAllChunk(mapChunkList.UnuseChunks);
 
         mapObstacleList = new MapObstacleList();
         mapObstacleList.InitializeList(BarriesPrefabs, ObstacleGenerateNumberForElem, ObstacleInitilizePosition, ObstacleParent);
@@ -102,20 +94,6 @@ public class MapChunkGenerator : MonoBehaviour
         FollowTestTargetCreateChunk();
         FollowTestTargetDeleteChunk();
         DrawChunks();
-    }
-
-    RaycastHit2D Raycast(Vector3 origin, Vector3 direction, float distance)
-    {
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(origin, direction, distance, HitLayer);
-        Color drawRayColor;
-        if (raycastHit2D)
-            drawRayColor = Color.red;
-        else
-            drawRayColor = Color.green;
-
-        Debug.DrawRay(origin, direction, drawRayColor, distance);
-
-        return raycastHit2D;
     }
 
     void DrawChunks()
@@ -152,14 +130,9 @@ public class MapChunkGenerator : MonoBehaviour
         if (testDistanceTrigger.radius != DistanceEdge)
             testDistanceTrigger.radius = DistanceEdge;
 
-        //Collider2D chunkCollider = Raycast(testTransform.position, RayDirection, RayDistance).collider;
-        Collider2D chunkCollider = testTrigger.GetOtherCollider;
-
-        if (chunkCollider != null && chunkCollider.CompareTag("Ground"))
+        MapChunk chunk = GetPlayerCurrentChunk();
+        if (chunk != null)
         {
-            // 获取检测物体当前所在的区块
-            MapChunk chunk = chunkCollider.gameObject.GetComponent<MapChunk>();
-
             // 获取当前的区块中心
             Vector3 nowChunkCenter = chunk.bounds.center;
 
@@ -232,13 +205,41 @@ public class MapChunkGenerator : MonoBehaviour
         }
     }
 
+    MapChunk GetPlayerCurrentChunk()
+    {
+        foreach (var chunk in mapChunkList.UsingChunks)
+        {
+            if(IsInArea(testTransform.position, chunk.bounds))
+            {
+                return chunk;
+            }
+        }
+        Collider2D chunkCollider = testTrigger.GetOtherCollider;
+        if (chunkCollider.CompareTag("Ground"))
+        {
+            return chunkCollider.gameObject.GetComponent<MapChunk>();
+        }
+        return null;
+    }
+
+    bool IsInArea(Vector2 pos, Bounds field)
+    {
+        if(pos.x <= field.max.x && pos.x >= field.min.x
+            && pos.y <= field.max.y && pos.y >= field.min.y)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     void GenerateChunk(Vector2 center, MapChunk currentChunk)
     {
         MapChunk chunk = mapChunkList.AddUseChunk(center);
         if (chunk != null)
         {
             Bounds bounds = chunk.bounds;
-            int genNum = Random.Range(SingleChunkObstacleMax / 2, SingleChunkObstacleMax);
+            int genNum = Random.Range((int)(SingleChunkObstacleMax * Granularity), SingleChunkObstacleMax);
             List<Vector2> genPos = new List<Vector2>();
             while (genNum > 0)
             {
@@ -284,27 +285,7 @@ public class MapChunkGenerator : MonoBehaviour
     {
         foreach(var chunk in mapChunks)
         {
-            FillChunk(chunk.gameObject.GetComponent<Tilemap>(), chunk.bounds);
-        }
-    }
-
-    void FillChunk(Tilemap target, Bounds bounds)
-    {
-        // 获取左下角的位置
-        Vector2Int fillPosStart = new Vector2Int(-(int)bounds.extents.x, -(int)bounds.extents.y);
-        // 获取宽度
-        int width = (int)bounds.size.x;
-
-        //获取高度
-        int height = (int)bounds.size.y;
-
-        // 从左下角，填充高度X宽度大小的区域
-        for (int xPos = 0;xPos < width;xPos ++)
-        { 
-            for(int yPos = 0;yPos < height;yPos ++)
-            {
-                target.SetTile(new Vector3Int(fillPosStart.x + xPos, fillPosStart.y + yPos, 0), GroundFileTile);
-            }
+            chunk.FillChunk();
         }
     }
 }

@@ -16,7 +16,7 @@ public class TestMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        vertical = 1.0f;
+        vertical = -1.0f;
         if (rb == null)
             rb = gameObject.GetComponent<Rigidbody2D>();
     }
@@ -30,9 +30,9 @@ public class TestMove : MonoBehaviour
         animator.SetFloat("Horizontal", horizontal);
     }
 
-    //private void FixedUpdate()
-    //{
-    //    rb.AddForce(new Vector2(horizontal, vertical) * force, ForceMode2D.Impulse);
-    //    rb.velocity = Vector2.ClampMagnitude(rb.velocity, MaxVelocity);
-    //}
+    private void FixedUpdate()
+    {
+        rb.AddForce(new Vector2(horizontal, vertical) * force, ForceMode2D.Impulse);
+        rb.velocity = Vector2.ClampMagnitude(rb.velocity, MaxVelocity);
+    }
 }
