@@ -276,7 +276,7 @@ MonoBehaviour:
   animator: {fileID: 33673537}
   rb: {fileID: 33673531}
   horizontalForce: 8
-  verticalForce: 8
+  verticalForce: 10
   MaxVelocity: {x: 30, y: 50}
 --- !u!95 &33673537
 Animator:
