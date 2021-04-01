@@ -21,24 +21,25 @@ public class MapChunk : MonoBehaviour
 
     private TileBase grondTile;
     private Tilemap tilemap;
-    private void Start()
-    {
-        LineRenderer.positionCount = 5;
-        LineRenderer.startWidth = LineWidth;
-        LineRenderer.endWidth = LineWidth;
-    }
 
-    private void Update()
-    {
-        if (ShowChunkLine)
-        {
-            DrawRect();
-        }
-        else
-        {
-            LineRenderer.enabled = false;
-        }
-    }
+    //private void Start()
+    //{
+    //    LineRenderer.positionCount = 5;
+    //    LineRenderer.startWidth = LineWidth;
+    //    LineRenderer.endWidth = LineWidth;
+    //}
+
+    //private void Update()
+    //{
+    //    if (ShowChunkLine)
+    //    {
+    //        DrawRect();
+    //    }
+    //    else
+    //    {
+    //        LineRenderer.enabled = false;
+    //    }
+    //}
 
     /// <summary>
     /// 使用区域大小、中心来初始化区块，可设置其父物体
@@ -79,7 +80,6 @@ public class MapChunk : MonoBehaviour
 
         //获取高度
         int height = (int)bounds.size.y;
-
         // 从左下角，填充高度X宽度大小的区域
         for (int xPos = 0; xPos < width; xPos++)
         {

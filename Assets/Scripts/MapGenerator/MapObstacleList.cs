@@ -70,7 +70,7 @@ public class MapObstacleList
     {
         foreach(MapObstacle obstacle in usingObstacle)
         {
-            if(obstacle.currentPosition == position)
+            if(obstacle.obstacleArea.Contains(position))
                 return true;
         }
         return false;

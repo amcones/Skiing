@@ -58,14 +58,8 @@ public class MapChunkGenerator : MonoBehaviour
     [SerializeField] MapChunkList mapChunkList;
     [SerializeField] MapObstacleList mapObstacleList;
 
-    // 目标测试物体的碰撞体或触发器在碰撞或触发之后可返回碰撞或触发的其他物体，用于检测物体是否到达了可以生成新区块的距离
-    private IGetOtherCollider testTrigger;
-
     // 目标测试物体的Transform组件
     private Transform testTransform;
-
-    // 目标测试物体的碰撞体或触发器
-    private CircleCollider2D testDistanceTrigger;
 
     // 区块对角线的长度
     private float chunkSizeMagnitude;
@@ -76,15 +70,10 @@ public class MapChunkGenerator : MonoBehaviour
         mapChunkList = new MapChunkList(InitializeChunkNum);
         mapChunkList.InitializeList(ChunkPrefab, ChunkInitializePosition, GeneratorGrid, ChunkSizeConfig, GroundFileTile);
 
-        //FillAllChunk(mapChunkList.UsingChunks);
-        //FillAllChunk(mapChunkList.UnuseChunks);
-
         mapObstacleList = new MapObstacleList();
         mapObstacleList.InitializeList(BarriesPrefabs, ObstacleGenerateNumberForElem, ObstacleInitilizePosition, ObstacleParent);
         
-        testTrigger = TestObject.GetComponent<IGetOtherCollider>();
         testTransform = TestObject.transform;
-        testDistanceTrigger = TestObject.GetComponent<CircleCollider2D>();
 
         chunkSizeMagnitude = ChunkSizeConfig.magnitude;
     }
@@ -93,7 +82,7 @@ public class MapChunkGenerator : MonoBehaviour
     {
         FollowTestTargetCreateChunk();
         FollowTestTargetDeleteChunk();
-        DrawChunks();
+        //DrawChunks();
     }
 
     void DrawChunks()
@@ -127,9 +116,6 @@ public class MapChunkGenerator : MonoBehaviour
 
     void FollowTestTargetCreateChunk()
     {
-        if (testDistanceTrigger.radius != DistanceEdge)
-            testDistanceTrigger.radius = DistanceEdge;
-
         MapChunk chunk = GetPlayerCurrentChunk();
         if (chunk != null)
         {
@@ -209,28 +195,12 @@ public class MapChunkGenerator : MonoBehaviour
     {
         foreach (var chunk in mapChunkList.UsingChunks)
         {
-            if(IsInArea(testTransform.position, chunk.bounds))
+            if(chunk.bounds.Contains(testTransform.position))
             {
                 return chunk;
             }
         }
-        Collider2D chunkCollider = testTrigger.GetOtherCollider;
-        if (chunkCollider.CompareTag("Ground"))
-        {
-            return chunkCollider.gameObject.GetComponent<MapChunk>();
-        }
         return null;
-    }
-
-    bool IsInArea(Vector2 pos, Bounds field)
-    {
-        if(pos.x <= field.max.x && pos.x >= field.min.x
-            && pos.y <= field.max.y && pos.y >= field.min.y)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     void GenerateChunk(Vector2 center, MapChunk currentChunk)
@@ -279,13 +249,5 @@ public class MapChunkGenerator : MonoBehaviour
 
         mapChunkList.CleanUpList();
         mapObstacleList.CleanUpList();
-    }
-
-    void FillAllChunk(List<MapChunk> mapChunks)
-    {
-        foreach(var chunk in mapChunks)
-        {
-            chunk.FillChunk();
-        }
     }
 }
