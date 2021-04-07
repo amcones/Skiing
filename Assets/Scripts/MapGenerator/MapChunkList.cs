@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [System.Serializable]
 public class MapChunkList
@@ -14,6 +15,10 @@ public class MapChunkList
     private int allChunkNumber;
     private Vector2 chunkSizeConfig;
 
+    private GameObject chunkPrefab;
+    private Transform parentObject;
+    private TileBase groundFileTile;
+
     public MapChunkList(int chunkNumber)
     {
         allChunkNumber = chunkNumber;
@@ -21,16 +26,18 @@ public class MapChunkList
         unuseChunks = new List<MapChunk>(allChunkNumber);
     }
 
-    public void InitializeList(GameObject chunkPrefab, Vector2 genPosition, Transform parentObject, Vector2 boundSize)
+    public void InitializeList(GameObject chunkPrefab, Vector2 genPosition, Transform parentObject, Vector2 boundSize, TileBase groundFileTile)
     {
+        this.groundFileTile = groundFileTile;
+        this.parentObject = parentObject;
         chunkSizeConfig = boundSize;
         for (int genNum = allChunkNumber; genNum > 1; genNum--)
         {
-            MapChunk mapChunk = CreateChunk(chunkPrefab, genPosition, parentObject);
+            MapChunk mapChunk = CreateChunk(chunkPrefab, genPosition, parentObject, groundFileTile);
             mapChunk.enabled = false;
             unuseChunks.Add(mapChunk);
         }
-        usingChunks.Add(CreateChunk(chunkPrefab, Vector2.zero, parentObject));
+        usingChunks.Add(CreateChunk(chunkPrefab, Vector2.zero, parentObject, groundFileTile));
     }
 
     #region 区块生成相关方法
@@ -40,14 +47,14 @@ public class MapChunkList
     /// <param name="prefab"></param>
     /// <param name="parent"></param>
     /// <returns></returns>
-    MapChunk CreateChunk(GameObject prefab, Vector2 position, Transform parent)
+    MapChunk CreateChunk(GameObject prefab, Vector2 position, Transform parent, TileBase tile)
     {
         GameObject newChunk = GameObject.Instantiate(prefab);
         if (newChunk is null)
             throw new System.NullReferenceException();
 
         MapChunk newChunkMap = newChunk.GetComponent<MapChunk>();
-        newChunkMap.InitializeChunk(chunkSizeConfig, position, parent);
+        newChunkMap.InitializeChunk(chunkSizeConfig, position, tile, parent);
         return newChunkMap;
     }
 
@@ -55,7 +62,7 @@ public class MapChunkList
     /// 简单地获取一个区块
     /// </summary>
     /// <returns></returns>
-    public MapChunk GetUnuseChunk()
+    public MapChunk GetUnuseChunk(bool isCreateNewIfEmpty)
     {
         if (unuseChunks.Count > 0)
         {
@@ -63,6 +70,10 @@ public class MapChunkList
             res.enabled = true;
             unuseChunks.RemoveAt(0);
             return res;
+        }
+        if(isCreateNewIfEmpty)
+        {
+            return CreateChunk(chunkPrefab, Vector2.zero, parentObject, groundFileTile);
         }
         return null;
     }
@@ -72,11 +83,11 @@ public class MapChunkList
     /// </summary>
     /// <param name="center"></param>
     /// <returns></returns>
-    public MapChunk AddUseChunk(Vector2 center)
+    public MapChunk AddUseChunk(Vector2 center, bool isCreateNewIfEmpty = false)
     {
         if (!IsCreatedChunk(center))
         {
-            MapChunk newChunk = GetUnuseChunk();
+            MapChunk newChunk = GetUnuseChunk(isCreateNewIfEmpty);
             if (newChunk != null)
             {
                 newChunk.InitializeChunk(chunkSizeConfig, center);
