@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Test : MonoBehaviour
+public class AnimationController : MonoBehaviour
 {
     public Animator animator;
 
