@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2754347123888596446}
   - component: {fileID: -2644698674009277414}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HouseOne
   m_TagString: Obstacle
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -63,7 +63,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8413632055755575292}
   - component: {fileID: 4601328287474471126}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7561706385164351436}
   - component: {fileID: 382449217750850832}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4073044634850905880}
   - component: {fileID: 5575547422287817608}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4828980733166630844}
   - component: {fileID: 3368081231541853536}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,7 +67,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6859077097814134668}
   - component: {fileID: 1452512251151077542}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 993615039743370670}
   - component: {fileID: 8124294793374661738}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TreeTwo
   m_TagString: Obstacle
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -202,7 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1402082949029252968}
   - component: {fileID: 7391318859494681592}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
