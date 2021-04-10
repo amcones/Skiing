@@ -17,7 +17,7 @@ public class MapChunkList
 
     private GameObject chunkPrefab;
     private Transform parentObject;
-    private TileBase groundFileTile;
+    private TileBase groundFillTile;
 
     public MapChunkList(int chunkNumber)
     {
@@ -26,18 +26,26 @@ public class MapChunkList
         unuseChunks = new List<MapChunk>(allChunkNumber);
     }
 
-    public void InitializeList(GameObject chunkPrefab, Vector2 genPosition, Transform parentObject, Vector2 boundSize, TileBase groundFileTile)
+    /// <summary>
+    /// 初始化区块列表
+    /// </summary>
+    /// <param name="chunkPrefab">区块预置体</param>
+    /// <param name="genPosition">生成的位置</param>
+    /// <param name="parentObject">父物体</param>
+    /// <param name="boundSize">区块大小设置</param>
+    /// <param name="groundFileTile">地面</param>
+    public void InitializeList(GameObject chunkPrefab, Vector2 genPosition, Transform parentObject, Vector2 boundSize, TileBase groundFillTile)
     {
-        this.groundFileTile = groundFileTile;
+        this.groundFillTile = groundFillTile;
         this.parentObject = parentObject;
         chunkSizeConfig = boundSize;
         for (int genNum = allChunkNumber; genNum > 1; genNum--)
         {
-            MapChunk mapChunk = CreateChunk(chunkPrefab, genPosition, parentObject, groundFileTile);
+            MapChunk mapChunk = CreateChunk(chunkPrefab, genPosition, parentObject, groundFillTile);
             mapChunk.enabled = false;
             unuseChunks.Add(mapChunk);
         }
-        usingChunks.Add(CreateChunk(chunkPrefab, Vector2.zero, parentObject, groundFileTile));
+        usingChunks.Add(CreateChunk(chunkPrefab, Vector2.zero, parentObject, groundFillTile));
     }
 
     #region 区块生成相关方法
@@ -73,7 +81,7 @@ public class MapChunkList
         }
         if(isCreateNewIfEmpty)
         {
-            return CreateChunk(chunkPrefab, Vector2.zero, parentObject, groundFileTile);
+            return CreateChunk(chunkPrefab, Vector2.zero, parentObject, groundFillTile);
         }
         return null;
     }
@@ -117,8 +125,6 @@ public class MapChunkList
     /// <summary>
     /// 移除指定区块，如果未使用区块的List已经存在则返回false，否则返回true
     /// </summary>
-    /// <param name="mapChunk"></param>
-    /// <returns></returns>
     public bool AddUnuseChunk(MapChunk mapChunk)
     {
         if (unuseChunks.Contains(mapChunk))
@@ -128,6 +134,9 @@ public class MapChunkList
         return true;
     }
 
+    /// <summary>
+    /// 将所有在未使用中的区块，从UsingChunks中移除
+    /// </summary>
     public void CleanUpList()
     {
         foreach(var chunk in unuseChunks)
