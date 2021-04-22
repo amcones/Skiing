@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class MapChunkGenerator : MonoBehaviour
+public class MapChunkGenerator : MonoBehaviour, ISetPlayer
 {
     #region Atrribute Field
     [Header("目标测试物体")]
@@ -73,16 +73,26 @@ public class MapChunkGenerator : MonoBehaviour
         mapObstacleList = new MapObstacleList();
         mapObstacleList.InitializeList(BarriesPrefabs, ObstacleGenerateNumberForElem, ObstacleInitilizePosition, ObstacleParent);
         
-        testTransform = TestObject.transform;
+        if(TestObject != null)
+            testTransform = TestObject.transform;
 
         chunkSizeMagnitude = ChunkSizeConfig.magnitude;
     }
 
     void Update()
     {
-        FollowTestTargetCreateChunk();
-        FollowTestTargetDeleteChunk();
-        //DrawChunks();
+        if(TestObject != null)
+        {
+            FollowTestTargetCreateChunk();
+            FollowTestTargetDeleteChunk();
+            //DrawChunks();
+        }
+    }
+
+    public void SetPlayer(GameObject target)
+    {
+        TestObject = target;
+        testTransform = target.transform;
     }
 
     /// <summary>

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollow : MonoBehaviour, ISetPlayer
 {
     public Camera TargetCamera;
     public Transform TargetPosition;
@@ -12,7 +12,8 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        CameraTransform = TargetCamera.transform;
+        if(TargetCamera != null)
+            CameraTransform = TargetCamera.transform;
     }
 
     private void Update()
@@ -22,6 +23,12 @@ public class CameraFollow : MonoBehaviour
         // targetPosition = Vector2.Lerp(CameraTransform.position, targetPosition, CameraMoveSmooth * Time.deltaTime);
         // CameraTransform.position = new Vector3(targetPosition.x, targetPosition.y, CameraTransform.position.z);
 
-        CameraTransform.position = new Vector3(TargetPosition.position.x, TargetPosition.position.y, CameraTransform.position.z);
+        if(TargetPosition != null && CameraTransform != null)
+            CameraTransform.position = new Vector3(TargetPosition.position.x, TargetPosition.position.y, CameraTransform.position.z);
+    }
+
+    public void SetPlayer(GameObject target)
+    {
+        TargetPosition = target.transform;
     }
 }

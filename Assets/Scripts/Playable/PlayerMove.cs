@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TestMove : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     public Animator animator;
 
@@ -37,6 +37,13 @@ public class TestMove : MonoBehaviour
     {
         rb.AddForce(new Vector2(horizontal * horizontalForce * Time.deltaTime, vertical), ForceMode2D.Impulse);
         rb.velocity = new Vector2(GetClamp(rb.velocity.x, MaxVelocity.x), GetClamp(rb.velocity.y, MaxVelocity.y));
+    }
+
+    public void Initialize(float horizontalForce, float verticalForce, Vector2 MaxVelocity)
+    {
+        this.horizontalForce = horizontalForce;
+        this.verticalForce = verticalForce;
+        this.MaxVelocity = MaxVelocity;
     }
 
     float GetClamp(float value, float target)
