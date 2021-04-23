@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     {
         currentPlayer = this;
         PlayerMove.enabled = true;
+        
         foreach (var set in Setplayer)
         {
             set.SetPlayer(this.gameObject);

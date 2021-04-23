@@ -165,7 +165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16629d5cc351364191f9641c5a711cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraFollow: {fileID: 0}
 --- !u!114 &4196796869653974288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,6 +179,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8581277635584597979}
   rb: {fileID: 2971870411947181261}
-  horizontalForce: 0
-  verticalForce: 0
+  horizontalForce: 15
+  verticalForce: 10
   MaxVelocity: {x: 0, y: 0}

@@ -16,6 +16,7 @@ public class PlayerMove : MonoBehaviour
     float horizontal;
     float vertical;
     bool isDown;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,8 +36,8 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddForce(new Vector2(horizontal * horizontalForce * Time.deltaTime, vertical), ForceMode2D.Impulse);
-        rb.velocity = new Vector2(GetClamp(rb.velocity.x, MaxVelocity.x), GetClamp(rb.velocity.y, MaxVelocity.y));
+        rb.velocity = new Vector2(GetClamp(rb.velocity.x + Time.deltaTime * horizontalForce * horizontal, MaxVelocity.x), 
+            GetClamp(rb.velocity.y + vertical * (MaxVelocity.y - rb.velocity.y) / MaxVelocity.y, MaxVelocity.y));
     }
 
     public void Initialize(float horizontalForce, float verticalForce, Vector2 MaxVelocity)

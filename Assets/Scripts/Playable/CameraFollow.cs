@@ -6,8 +6,7 @@ public class CameraFollow : MonoBehaviour, ISetPlayer
 {
     public Camera TargetCamera;
     public Transform TargetPosition;
-    public float CameraMoveSmooth;
-
+    public Vector2 Offset;
     private Transform CameraTransform;
 
     private void Start()
@@ -24,7 +23,7 @@ public class CameraFollow : MonoBehaviour, ISetPlayer
         // CameraTransform.position = new Vector3(targetPosition.x, targetPosition.y, CameraTransform.position.z);
 
         if(TargetPosition != null && CameraTransform != null)
-            CameraTransform.position = new Vector3(TargetPosition.position.x, TargetPosition.position.y, CameraTransform.position.z);
+            CameraTransform.position = new Vector3(TargetPosition.position.x + Offset.x, TargetPosition.position.y + Offset.y, CameraTransform.position.z);
     }
 
     public void SetPlayer(GameObject target)
