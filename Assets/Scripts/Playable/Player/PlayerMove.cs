@@ -18,10 +18,13 @@ public class PlayerMove : MonoBehaviour
     float vertical;
     bool isDown;
 
+    float preHorizontalForce;
+
     // Start is called before the first frame update
     void Start()
     {
-        if(playCollider == null)
+        preHorizontalForce = horizontalForce;
+        if (playCollider == null)
             playCollider = gameObject.GetComponent<BoxCollider2D>();
         if (rb == null)
             rb = gameObject.GetComponent<Rigidbody2D>();
@@ -44,6 +47,7 @@ public class PlayerMove : MonoBehaviour
 
     public void StopMove()
     {
+        rb.velocity = Vector2.zero;
         this.enabled = false;
     }
 
@@ -57,7 +61,7 @@ public class PlayerMove : MonoBehaviour
     public void ResetState()
     {
         playCollider.enabled = true;
-        horizontalForce *= decreaseRate;
+        horizontalForce = preHorizontalForce;
     }
 
     public void Initialize(float horizontalForce, float verticalForce, Vector2 MaxVelocity)

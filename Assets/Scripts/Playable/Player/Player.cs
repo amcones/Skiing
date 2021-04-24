@@ -15,35 +15,23 @@ public class Player : MonoBehaviour
     private static Player currentPlayer = null;
     public static Player CurrentPlayer => currentPlayer;
 
-    public List<ISetPlayer> Setplayer;
-
     public string BarriersTag;
     public float SecondAfterBarrier;
-    public int allowMistakeNumber;
+    public int maxAllowMistakeNumber;
 
     public UnityEvent mistakeEvent;
     public UnityEvent gameOverEvent;
 
     private PlayerMove playerMove;
     private PlayerState playerState;
+    private int allowMistakeNumber;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (Setplayer == null)
-            Setplayer = new List<ISetPlayer>();
         playerMove = GetComponent<PlayerMove>();
+        allowMistakeNumber = maxAllowMistakeNumber;
     }
-
-    /// <summary>
-    /// 添加设置玩家的类，初始化时调用
-    /// </summary>
-    /// <param name="setPlayer"></param>
-    public void AddSet(ISetPlayer setPlayer)
-    {
-        Setplayer.Add(setPlayer);
-    }
-
     /// <summary>
     /// 将玩家设置为当前的实例，初始化时调用
     /// </summary>
@@ -51,11 +39,6 @@ public class Player : MonoBehaviour
     {
         currentPlayer = this;
         playerMove.enabled = true;
-        
-        foreach (var set in Setplayer)
-        {
-            set.SetPlayer(this.gameObject);
-        }
     }
 
     /// <summary>
@@ -77,6 +60,14 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+    /// 增加允许失误的次数
+    /// </summary>
+    public void AddAllowMistakeNumber()
+    {
+        allowMistakeNumber = Mathf.Clamp(allowMistakeNumber + 1, 0, maxAllowMistakeNumber);
+    }
+
+    /// <summary>
     /// 减少允许失误的次数
     /// </summary>
     public void DecreaseAllowMistakeNumber()
@@ -84,8 +75,7 @@ public class Player : MonoBehaviour
         allowMistakeNumber--;
         if(allowMistakeNumber <= 0)
         {
-            playerState = PlayerState.GameOver;
-            gameOverEvent.Invoke();
+            GameOver();
         }
     }
 
@@ -95,9 +85,15 @@ public class Player : MonoBehaviour
     public void PlayerTouchbarrier()
     {
         playerState = PlayerState.TouchBarrier;
-        //playerMove.TouchBarrier();
         DecreaseAllowMistakeNumber();
         mistakeEvent.Invoke();
+    }
+
+    public void GameOver()
+    {
+        playerState = PlayerState.GameOver;
+        playerMove.StopMove();
+        gameOverEvent.Invoke();
     }
 
     /// <summary>

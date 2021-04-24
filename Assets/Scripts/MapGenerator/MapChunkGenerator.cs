@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class MapChunkGenerator : MonoBehaviour, ISetPlayer
+public class MapChunkGenerator : MonoBehaviour
 {
     #region Atrribute Field
     [Header("目标测试物体")]
@@ -89,9 +89,9 @@ public class MapChunkGenerator : MonoBehaviour, ISetPlayer
         }
     }
 
-    public void SetPlayer(GameObject target)
+    public void SetPlayer(Player target)
     {
-        TestObject = target;
+        TestObject = target.gameObject;
         testTransform = target.transform;
     }
 
@@ -197,13 +197,13 @@ public class MapChunkGenerator : MonoBehaviour, ISetPlayer
     }
 
     /// <summary>
-    /// 得到玩家现在所在的区块
+    /// 得到测试目标现在所在的区块
     /// </summary>
     /// <remarks>
-    /// 遍历所有正在使用的区块，如果区块包含玩家所在的位置，即此区块为玩家所在区块
+    /// 遍历所有正在使用的区块，如果区块包含测试目标所在的位置，即此区块为所在区块
     /// </remarks>
     /// <returns></returns>
-    MapChunk GetPlayerCurrentChunk()
+    public MapChunk GetPlayerCurrentChunk()
     {
         foreach (var chunk in mapChunkList.UsingChunks)
         {

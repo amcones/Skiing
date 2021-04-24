@@ -8,7 +8,9 @@ public class ScorePanel : MonoBehaviour
     public GameObject PanelGo;
     public Text ScoreText;
     public string ScoreColor = "red";
+
     private ScoreData score;
+    public long Score => score.Score;
 
     public void InitializeScorePanel()
     {

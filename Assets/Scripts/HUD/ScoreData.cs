@@ -31,14 +31,4 @@ public class ScoreData
     {
         this.score -= score;
     }
-
-    public long GetHeadNumber()
-    {
-        return score / overflow;
-    }
-
-    public long GetLastNumber()
-    {
-        return score % overflow;
-    }
 }

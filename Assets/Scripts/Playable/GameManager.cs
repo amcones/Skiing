@@ -3,29 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour, ISetPlayer
+public class GameManager : MonoBehaviour
 {
     [Header("地图生成")]
     public MapChunkGenerator MapChunkGenerator;
 
     [Header("游戏得分")]
     public int everScoreAppend;
+    public float gradualScoreRate;
     public ScorePanel ScorePanel;
 
+    [Header("HUD")]
+    public MistakeHUD MistakeHUDPanel;
     public GameOverPanel GameOverPanel;
 
-    private Player player = null;
+    [Header("敌人相关")]
+    public EnemyManager EnemyManager;
 
-    public void SetPlayer(GameObject player)
+    [Header("其他")]
+    public CameraFollow CameraFollow;
+    
+    private Player player = null;
+    private float processScore;
+
+    public void SetPlayer(Player player)
     {
-        this.player = player.GetComponent<Player>();
+        this.player = player;
+        MistakeHUDPanel.InitializeMistakePanel(this.player.maxAllowMistakeNumber);
+        MapChunkGenerator.SetPlayer(player);
+        CameraFollow.SetPlayer(player.gameObject);
+        EnemyManager.SetPlayer(player);
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        processScore = 0.1f;
         MapChunkGenerator.InitializeGenerator();
         ScorePanel.InitializeScorePanel();
+        EnemyManager.InitializeEnemyManager();
     }
 
     // Update is called once per frame
@@ -33,8 +49,13 @@ public class GameManager : MonoBehaviour, ISetPlayer
     {
         if (player == null)
             return;
-        ScorePanel.AddScore(everScoreAppend);
+        ScorePanel.AddScore((int)(everScoreAppend * processScore));
         MapChunkGenerator.GeneratorChunkUpdate();
+        EnemyManager.GenEnemyUpdate();
+        if(processScore < 1.0f)
+        {
+            processScore += gradualScoreRate;
+        }
     }
 
     public void GameOver()
@@ -42,6 +63,7 @@ public class GameManager : MonoBehaviour, ISetPlayer
         player = null;
         string scoreString = ScorePanel.GetScoreString();
         ScorePanel.PanelGo.SetActive(false);
+        MistakeHUDPanel.gameObject.SetActive(false);
         GameOverPanel.gameObject.SetActive(true);
         GameOverPanel.SetContentText(scoreString);
     }
