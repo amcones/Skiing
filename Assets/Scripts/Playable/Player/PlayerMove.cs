@@ -8,12 +8,12 @@ public class PlayerMove : MonoBehaviour
     public Animator animator;
 
     public Rigidbody2D rb;
+    public BoxCollider2D playCollider;
     public float horizontalForce;
     public float decreaseRate;
     public float verticalForce;
     public Vector2 MaxVelocity;
     
-    BoxCollider2D playCollider;
     float horizontal;
     float vertical;
     bool isDown;
@@ -21,7 +21,8 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playCollider = gameObject.GetComponent<BoxCollider2D>();
+        if(playCollider == null)
+            playCollider = gameObject.GetComponent<BoxCollider2D>();
         if (rb == null)
             rb = gameObject.GetComponent<Rigidbody2D>();
     }

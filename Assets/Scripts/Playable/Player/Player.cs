@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -11,15 +12,21 @@ public class Player : MonoBehaviour
         GameOver,
     }
 
-    private static Player currentPlayer;
+    private static Player currentPlayer = null;
     public static Player CurrentPlayer => currentPlayer;
 
     public List<ISetPlayer> Setplayer;
+
     public string BarriersTag;
     public float SecondAfterBarrier;
+    public int allowMistakeNumber;
+
+    public UnityEvent mistakeEvent;
+    public UnityEvent gameOverEvent;
 
     private PlayerMove playerMove;
     private PlayerState playerState;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,11 +35,18 @@ public class Player : MonoBehaviour
         playerMove = GetComponent<PlayerMove>();
     }
 
+    /// <summary>
+    /// 添加设置玩家的类，初始化时调用
+    /// </summary>
+    /// <param name="setPlayer"></param>
     public void AddSet(ISetPlayer setPlayer)
     {
         Setplayer.Add(setPlayer);
     }
 
+    /// <summary>
+    /// 将玩家设置为当前的实例，初始化时调用
+    /// </summary>
     public void SetPlayer()
     {
         currentPlayer = this;
@@ -44,14 +58,56 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 判断是否游戏结束
+    /// </summary>
+    /// <returns></returns>
+    public bool IsGameOver()
+    {
+        return playerState == PlayerState.GameOver;
+    }
+
+    /// <summary>
+    /// 判断是否碰撞到障碍物
+    /// </summary>
+    /// <returns></returns>
+    public bool IsTouchBarrier()
+    {
+        return playerState == PlayerState.TouchBarrier;
+    }
+
+    /// <summary>
+    /// 减少允许失误的次数
+    /// </summary>
+    public void DecreaseAllowMistakeNumber()
+    {
+        allowMistakeNumber--;
+        if(allowMistakeNumber <= 0)
+        {
+            playerState = PlayerState.GameOver;
+            gameOverEvent.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// 玩家碰撞到障碍物运行的事件
+    /// </summary>
     public void PlayerTouchbarrier()
     {
         playerState = PlayerState.TouchBarrier;
-        playerMove.TouchBarrier();
+        //playerMove.TouchBarrier();
+        DecreaseAllowMistakeNumber();
+        mistakeEvent.Invoke();
     }
 
+    /// <summary>
+    /// 玩家重新开始滑冰
+    /// </summary>
     public void PlayerReSking()
     {
+        if (IsGameOver())
+            return;
+
         playerState = PlayerState.Sking;
         playerMove.ResetState();
     }
@@ -60,8 +116,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(BarriersTag))
         {
-            Debug.Log("Touch");
-            if (playerState != PlayerState.TouchBarrier)
+            if (!IsGameOver() && !IsTouchBarrier())
             {
                 StartCoroutine(WaitForContinueSking(SecondAfterBarrier));
             }
@@ -70,9 +125,6 @@ public class Player : MonoBehaviour
 
     private IEnumerator WaitForContinueSking(float seconds)
     {
-        if (playerState == PlayerState.TouchBarrier || playerState == PlayerState.GameOver)
-            yield break;
-
         PlayerTouchbarrier();
         yield return new WaitForSeconds(seconds);
         PlayerReSking();

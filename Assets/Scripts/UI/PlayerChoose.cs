@@ -12,7 +12,7 @@ public class PlayerChoose : MonoBehaviour
 
     public CameraFollow cameraFollow;
     public MapChunkGenerator mapChunkGenerator;
-
+    public GameManager gameManager;
     public Transform CenterPos;
 
     public UnityEvent StartGameEvent;
@@ -25,6 +25,7 @@ public class PlayerChoose : MonoBehaviour
         {
             player.AddSet(mapChunkGenerator);
             player.AddSet(cameraFollow);
+            player.AddSet(gameManager);
         }
     }
 

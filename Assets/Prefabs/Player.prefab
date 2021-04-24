@@ -167,6 +167,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BarriersTag: Obstacle
   SecondAfterBarrier: 2
+  allowMistakeNumber: 3
+  mistakeEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4196796869653974288}
+        m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
+        m_MethodName: TouchBarrier
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  gameOverEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4196796869653974288}
+        m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
+        m_MethodName: StopMove
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4196796869653974288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,7 +212,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8581277635584597979}
   rb: {fileID: 2971870411947181261}
+  playCollider: {fileID: 3132066547500150866}
   horizontalForce: 30
-  decreaseRate: 10
+  decreaseRate: 6
   verticalForce: 20
   MaxVelocity: {x: 20, y: 15}
