@@ -65,7 +65,7 @@ public class MapChunkGenerator : MonoBehaviour, ISetPlayer
     private float chunkSizeMagnitude;
     #endregion
 
-    void Start()
+    public void InitializeGenerator()
     {
         mapChunkList = new MapChunkList(InitializeChunkNum);
         mapChunkList.InitializeList(ChunkPrefab, ChunkInitializePosition, GeneratorGrid, ChunkSizeConfig, GroundFileTile);
@@ -79,7 +79,7 @@ public class MapChunkGenerator : MonoBehaviour, ISetPlayer
         chunkSizeMagnitude = ChunkSizeConfig.magnitude;
     }
 
-    void Update()
+    public void GeneratorChunkUpdate()
     {
         if(TestObject != null)
         {

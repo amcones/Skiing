@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour
 
     public Rigidbody2D rb;
     public float horizontalForce;
+    public float decreaseRate;
     public float verticalForce;
     public Vector2 MaxVelocity;
     
@@ -40,6 +41,24 @@ public class PlayerMove : MonoBehaviour
             GetClamp(rb.velocity.y + vertical * (MaxVelocity.y - rb.velocity.y) / MaxVelocity.y, MaxVelocity.y));
     }
 
+    public void StopMove()
+    {
+        this.enabled = false;
+    }
+
+    public void TouchBarrier()
+    {
+        rb.velocity = Vector2.zero;
+        horizontalForce /= decreaseRate;
+        playCollider.enabled = false;
+    }
+
+    public void ResetState()
+    {
+        playCollider.enabled = true;
+        horizontalForce *= decreaseRate;
+    }
+
     public void Initialize(float horizontalForce, float verticalForce, Vector2 MaxVelocity)
     {
         this.horizontalForce = horizontalForce;
@@ -47,6 +66,9 @@ public class PlayerMove : MonoBehaviour
         this.MaxVelocity = MaxVelocity;
     }
 
+    /// <summary>
+    /// 提供一个限制value范围在[-target, taget]的方法
+    /// </summary>
     float GetClamp(float value, float target)
     {
         if(value > 0 && value > target)
