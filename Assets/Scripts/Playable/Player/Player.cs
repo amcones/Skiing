@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Ìí¼ÓÉèÖÃÍæ¼ÒµÄÀà£¬³õÊ¼»¯Ê±µ÷ÓÃ
+    /// æ·»åŠ è®¾ç½®ç©å®¶çš„ç±»ï¼Œåˆå§‹åŒ–æ—¶è°ƒç”¨
     /// </summary>
     /// <param name="setPlayer"></param>
     public void AddSet(ISetPlayer setPlayer)
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// ½«Íæ¼ÒÉèÖÃÎªµ±Ç°µÄÊµÀı£¬³õÊ¼»¯Ê±µ÷ÓÃ
+    /// å°†ç©å®¶è®¾ç½®ä¸ºå½“å‰çš„å®ä¾‹ï¼Œåˆå§‹åŒ–æ—¶è°ƒç”¨
     /// </summary>
     public void SetPlayer()
     {
@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÊÇ·ñÓÎÏ·½áÊø
+    /// åˆ¤æ–­æ˜¯å¦æ¸¸æˆç»“æŸ
     /// </summary>
     /// <returns></returns>
     public bool IsGameOver()
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// ÅĞ¶ÏÊÇ·ñÅö×²µ½ÕÏ°­Îï
+    /// åˆ¤æ–­æ˜¯å¦ç¢°æ’åˆ°éšœç¢ç‰©
     /// </summary>
     /// <returns></returns>
     public bool IsTouchBarrier()
@@ -77,7 +77,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// ¼õÉÙÔÊĞíÊ§ÎóµÄ´ÎÊı
+    /// å‡å°‘å…è®¸å¤±è¯¯çš„æ¬¡æ•°
     /// </summary>
     public void DecreaseAllowMistakeNumber()
     {
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Íæ¼ÒÅö×²µ½ÕÏ°­ÎïÔËĞĞµÄÊÂ¼ş
+    /// ç©å®¶ç¢°æ’åˆ°éšœç¢ç‰©è¿è¡Œçš„äº‹ä»¶
     /// </summary>
     public void PlayerTouchbarrier()
     {
@@ -101,7 +101,7 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// Íæ¼ÒÖØĞÂ¿ªÊ¼»¬±ù
+    /// ç©å®¶é‡æ–°å¼€å§‹æ»‘å†°
     /// </summary>
     public void PlayerReSking()
     {

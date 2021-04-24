@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour, ISetPlayer
 {
-    [Header("地图生成")]
+    [Header("鍦板浘鐢熸垚")]
     public MapChunkGenerator MapChunkGenerator;
 
-    [Header("游戏得分")]
+    [Header("娓告垙寰楀垎")]
     public int everScoreAppend;
     public ScorePanel ScorePanel;
 
