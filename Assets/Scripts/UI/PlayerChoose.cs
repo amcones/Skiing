@@ -10,23 +10,11 @@ public class PlayerChoose : MonoBehaviour
 
     public List<Player> Players;
 
-    public CameraFollow cameraFollow;
-    public MapChunkGenerator mapChunkGenerator;
-
-    public Transform CenterPos;
+    public GameManager gameManager;
 
     public UnityEvent StartGameEvent;
 
     private int flag = 0;
-
-    private void Start()
-    {
-        foreach(Player player in Players)
-        {
-            player.AddSet(mapChunkGenerator);
-            player.AddSet(cameraFollow);
-        }
-    }
 
     // Update is called once per frame
     void Update()
@@ -51,7 +39,10 @@ public class PlayerChoose : MonoBehaviour
     public void StartGame()
     {
         Players[flag].transform.parent = null;
+
         Players[flag].SetPlayer();
+        gameManager.SetPlayer(Players[flag]);
+
         StartGameEvent.Invoke();
         ChooseButtonGroup.SetActive(false);
         this.gameObject.SetActive(false);
