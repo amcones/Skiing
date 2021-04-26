@@ -44,25 +44,39 @@ public class MapChunk : MonoBehaviour
     /// <summary>
     /// 使用区域大小、中心来初始化区块，可设置其父物体
     /// </summary>
-    /// <param name="boundSize"></param>
-    /// <param name="center"></param>
-    /// <param name="transformParent"></param>
     public void InitializeChunk(Vector2 boundSize, Vector2 center, TileBase grondTile = null, Transform transformParent = null)
     {
-        if(id == -1)
+        // ======================================
+        // 如果是第一次生成，赋予一个ID，之后不可变。
+        // 暂时没有想到使用的地方，先留在这里
+        // ======================================
+        if (id == -1)
         {
             id = GenerateCount;
             GenerateCount++;
         }
 
+        // ======================================
+        // 生成的时候需要父物体，特别是使用了Tilemap，
+        // 需要放在有Grid组件的父物体下。
+        // 只有传入的父物体不为空时，该段代码才不会运行
+        // ======================================
         if (transformParent != null)
             transform.SetParent(transformParent);
 
+        // ======================================
+        // 此处用于设置区块大小（bounds.size）、中心（bounds.center）
+        // 以及位置（transform.position）
+        // ======================================
         bounds.size = boundSize;
         bounds.center = center;
         transform.position = center;
 
-        if(grondTile != null)
+        // ======================================
+        // 在传入瓦片不为空时会重新为该区块的Tilemap
+        // 填充新的瓦片。
+        // ======================================
+        if (grondTile != null)
         {
             this.grondTile = grondTile;
             if(tilemap == null)
@@ -90,11 +104,20 @@ public class MapChunk : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 调试时使用，可以显示目前活跃的区块。
+    /// </summary>
+    /// <remarks>
+    /// 需要使用请将MapChunk的Start即Update取消注释
+    /// </remarks>
     public void SetShowChunkLine(bool isShow)
     {
         ShowChunkLine = isShow;
     }
 
+    /// <summary>
+    /// 同上
+    /// </summary>
     public void DrawRect()
     {
         LineRenderer.enabled = true;

@@ -65,7 +65,7 @@ public class MapChunkGenerator : MonoBehaviour
     private float chunkSizeMagnitude;
     #endregion
 
-    void Start()
+    public void InitializeGenerator()
     {
         mapChunkList = new MapChunkList(InitializeChunkNum);
         mapChunkList.InitializeList(ChunkPrefab, ChunkInitializePosition, GeneratorGrid, ChunkSizeConfig, GroundFileTile);
@@ -73,18 +73,31 @@ public class MapChunkGenerator : MonoBehaviour
         mapObstacleList = new MapObstacleList();
         mapObstacleList.InitializeList(BarriesPrefabs, ObstacleGenerateNumberForElem, ObstacleInitilizePosition, ObstacleParent);
         
-        testTransform = TestObject.transform;
+        if(TestObject != null)
+            testTransform = TestObject.transform;
 
         chunkSizeMagnitude = ChunkSizeConfig.magnitude;
     }
 
-    void Update()
+    public void GeneratorChunkUpdate()
     {
-        FollowTestTargetCreateChunk();
-        FollowTestTargetDeleteChunk();
-        //DrawChunks();
+        if(TestObject != null)
+        {
+            FollowTestTargetCreateChunk();
+            FollowTestTargetDeleteChunk();
+            //DrawChunks();
+        }
     }
 
+    public void SetPlayer(Player target)
+    {
+        TestObject = target.gameObject;
+        testTransform = target.transform;
+    }
+
+    /// <summary>
+    /// 调试时使用，可以显示目前活跃的区块。
+    /// </summary>
     void DrawChunks()
     {
         if (DrawChunk)
@@ -133,14 +146,12 @@ public class MapChunkGenerator : MonoBehaviour
             // 判断检测物体离左侧是否小于等于指定距离
             if (isXLeftCloset)
             {
-                GenerateChunk(new Vector2(nowChunkCenter.x - ChunkSizeConfig.x, nowChunkCenter.y),
-                    chunk);
+                GenerateChunk(new Vector2(nowChunkCenter.x - ChunkSizeConfig.x, nowChunkCenter.y));
             }
             // 判断检测物体离右侧是否小于等于指定距离
             else if (isXRightCloset)
             {
-                GenerateChunk(new Vector2(nowChunkCenter.x + ChunkSizeConfig.x, nowChunkCenter.y),
-                    chunk);
+                GenerateChunk(new Vector2(nowChunkCenter.x + ChunkSizeConfig.x, nowChunkCenter.y));
             }
 
             // 两个布尔值，记录检测物体离当前区块的上、下的远近
@@ -154,44 +165,45 @@ public class MapChunkGenerator : MonoBehaviour
             // 判断检测物体离下侧是否小于等于指定距离
             if (isYDownCloset)
             {
-                GenerateChunk(new Vector2(nowChunkCenter.x, nowChunkCenter.y - ChunkSizeConfig.y),
-                    chunk);
+                GenerateChunk(new Vector2(nowChunkCenter.x, nowChunkCenter.y - ChunkSizeConfig.y));
             }
             // 判断检测物体离上侧是否小于等于指定距离
             else if (isYUpCloset)
             {
-                GenerateChunk(new Vector2(nowChunkCenter.x, nowChunkCenter.y + ChunkSizeConfig.y),
-                    chunk);
+                GenerateChunk(new Vector2(nowChunkCenter.x, nowChunkCenter.y + ChunkSizeConfig.y));
             }
 
             // 如果离左和下很近，需要在左下斜角再生成一个区块
             if (isXLeftCloset && isYDownCloset)
             {
-                GenerateChunk(new Vector2(nowChunkCenter.x - ChunkSizeConfig.x, nowChunkCenter.y - ChunkSizeConfig.y),
-                    chunk);
+                GenerateChunk(new Vector2(nowChunkCenter.x - ChunkSizeConfig.x, nowChunkCenter.y - ChunkSizeConfig.y));
             }
             // 如果离右和下很近，需要在右下斜角再生成一个区块
             else if (isXRightCloset && isYDownCloset)
             {
-                GenerateChunk(new Vector2(nowChunkCenter.x + ChunkSizeConfig.x, nowChunkCenter.y - ChunkSizeConfig.y),
-                    chunk);
+                GenerateChunk(new Vector2(nowChunkCenter.x + ChunkSizeConfig.x, nowChunkCenter.y - ChunkSizeConfig.y));
             }
             // 如果离左和上很近，需要在左上斜角再生成一个区块
             else if (isXLeftCloset && isYUpCloset)
             {
-                GenerateChunk(new Vector2(nowChunkCenter.x - ChunkSizeConfig.x, nowChunkCenter.y + ChunkSizeConfig.y),
-                    chunk);
+                GenerateChunk(new Vector2(nowChunkCenter.x - ChunkSizeConfig.x, nowChunkCenter.y + ChunkSizeConfig.y));
             }
             // 如果离右和上很近，需要在右上斜角再生成一个区块
             else if (isXRightCloset && isYUpCloset)
             {
-                GenerateChunk(new Vector2(nowChunkCenter.x + ChunkSizeConfig.x, nowChunkCenter.y + ChunkSizeConfig.y),
-                    chunk);
+                GenerateChunk(new Vector2(nowChunkCenter.x + ChunkSizeConfig.x, nowChunkCenter.y + ChunkSizeConfig.y));
             }
         }
     }
 
-    MapChunk GetPlayerCurrentChunk()
+    /// <summary>
+    /// 得到测试目标现在所在的区块
+    /// </summary>
+    /// <remarks>
+    /// 遍历所有正在使用的区块，如果区块包含测试目标所在的位置，即此区块为所在区块
+    /// </remarks>
+    /// <returns></returns>
+    public MapChunk GetPlayerCurrentChunk()
     {
         foreach (var chunk in mapChunkList.UsingChunks)
         {
@@ -203,20 +215,26 @@ public class MapChunkGenerator : MonoBehaviour
         return null;
     }
 
-    void GenerateChunk(Vector2 center, MapChunk currentChunk)
+    /// <summary>
+    /// 生成区块
+    /// </summary>
+    /// <param name="center">新区块的位置/中心</param>
+    void GenerateChunk(Vector2 center)
     {
         MapChunk chunk = mapChunkList.AddUseChunk(center);
         if (chunk != null)
         {
             Bounds bounds = chunk.bounds;
             int genNum = Random.Range((int)(SingleChunkObstacleMax * Granularity), SingleChunkObstacleMax);
+
+            // 为区块生成障碍物。genPos是为了记录已经生成了障碍物的位置
             List<Vector2> genPos = new List<Vector2>();
             while (genNum > 0)
             {
                 Vector2 newPos = GenerateRandomPositionFromBounds(bounds);
                 if (!genPos.Contains(newPos))
                 {
-                    mapObstacleList.AddUseObstacle(newPos, currentChunk);
+                    mapObstacleList.AddUseObstacle(newPos, chunk);
                     genPos.Add(newPos);
                     genNum--;
                 }
@@ -232,10 +250,14 @@ public class MapChunkGenerator : MonoBehaviour
             );
     }
 
+    /// <summary>
+    /// 删除区块
+    /// </summary>
     void FollowTestTargetDeleteChunk()
     {
         foreach(MapChunk chunk in mapChunkList.UsingChunks)
         {
+            // 如果离测试物体的距离大于设定距离就加入到未使用的区块中
             if(Vector2.Distance(testTransform.position, chunk.transform.position) > DistanceDel * chunkSizeMagnitude)
             {
                 mapChunkList.AddUnuseChunk(chunk);
@@ -247,6 +269,7 @@ public class MapChunkGenerator : MonoBehaviour
             }
         }
 
+        // 需要执行CleanUpList来清理两个列表
         mapChunkList.CleanUpList();
         mapObstacleList.CleanUpList();
     }
