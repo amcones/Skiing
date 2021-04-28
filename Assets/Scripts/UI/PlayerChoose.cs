@@ -7,7 +7,7 @@ public class PlayerChoose : MonoBehaviour
 {
     public Transform PlayerChoosePanel;
     public GameObject ChooseButtonGroup;
-
+    public GameObject StartButtonGroup;
     public List<Player> Players;
 
     public GameManager gameManager;
@@ -45,6 +45,7 @@ public class PlayerChoose : MonoBehaviour
 
         StartGameEvent.Invoke();
         ChooseButtonGroup.SetActive(false);
+        StartButtonGroup.SetActive(false);
         this.gameObject.SetActive(false);
     }
 
