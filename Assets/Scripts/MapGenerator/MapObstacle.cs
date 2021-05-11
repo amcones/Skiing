@@ -10,7 +10,6 @@ public class MapObstacle : MonoBehaviour
     public Rect obstacleArea;
 
     private MapChunk currentChunk;
-    private SpriteRenderer[] spriteRenderers;
 
     private long id = -1;
     public long ID => id;
@@ -20,7 +19,6 @@ public class MapObstacle : MonoBehaviour
         {
             id = GenerteCount;
             GenerteCount++;
-            spriteRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
         }
 
         currentPosition = newPosition;
@@ -31,14 +29,6 @@ public class MapObstacle : MonoBehaviour
 
         if (parent != null)
             this.gameObject.transform.parent = parent;
-
-        if(spriteRenderers != null || spriteRenderers.Length >= 2)
-        {
-            foreach(var renderer in spriteRenderers)
-            {
-                renderer.sortingOrder = (int)Mathf.Abs(newPosition.y);
-            }
-        }
     }
 
     public bool IsCurrentChunk(MapChunk mapChunk)

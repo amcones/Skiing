@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     public GameOverPanel GameOverPanel;
+    public GameObject GamePausePanel;
 
     [Header("敌人相关")]
     public EnemyManager EnemyManager;
@@ -28,11 +29,10 @@ public class GameManager : MonoBehaviour
     
     private Player player = null;
     private float processScore;
-    private GameStatusControl gameStatusControl;
+    private bool isPause = false;
     public void SetPlayer(Player player)
     {
         this.player = player;
-        gameStatusControl.EnterGaming();
         MistakeHUDPanel.SetPlayer(player);
         MapChunkGenerator.SetPlayer(player);
         CameraFollow.SetPlayer(player.gameObject);
@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         processScore = 0.1f;
-        gameStatusControl = GameStatusControl.CurrentGameStatus;
         MapChunkGenerator.InitializeGenerator();
         ScorePanel.InitializeScorePanel();
         EnemyManager.InitializeEnemyManager();
@@ -53,6 +52,12 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (player == null)
+            return;
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+            PauseGame();
+
+        if (isPause)
             return;
 
         ScorePanel.AddScore((int)(everScoreAppend * processScore));
@@ -71,8 +76,14 @@ public class GameManager : MonoBehaviour
         ScorePanel.PanelGo.SetActive(false);
         PercentHUDPanel.SetActive(false);
         GameOverPanel.gameObject.SetActive(true);
-        gameStatusControl.Reset();
         GameOverPanel.SetContentText(scoreString);
+    }
+
+    public void PauseGame()
+    {
+        GamePausePanel.SetActive(!GamePausePanel.activeSelf);
+        Time.timeScale = Time.timeScale == 1 ? 0 : 1;
+        isPause = !isPause;
     }
 
     public void RestartGame()
@@ -83,5 +94,10 @@ public class GameManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public bool IsPauseGame()
+    {
+        return isPause;
     }
 }
