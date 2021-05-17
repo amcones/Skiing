@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3827090774020537464}
   - component: {fileID: 4196796869653974288}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player1
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -214,6 +214,11 @@ MonoBehaviour:
   rb: {fileID: 2971870411947181261}
   playCollider: {fileID: 3132066547500150866}
   horizontalForce: 30
-  decreaseRate: 6
+  decreaseRate: 2
   verticalForce: 20
   MaxVelocity: {x: 20, y: 15}
+  waitSpeedUpTime: 0
+  speedUpVelocity: {x: 0, y: 0}
+  addSpeedUpEvent:
+    m_PersistentCalls:
+      m_Calls: []

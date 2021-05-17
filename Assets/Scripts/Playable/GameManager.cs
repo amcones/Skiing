@@ -14,8 +14,12 @@ public class GameManager : MonoBehaviour
     public ScorePanel ScorePanel;
 
     [Header("HUD")]
+    public GameObject PercentHUDPanel;
     public MistakeHUD MistakeHUDPanel;
+
+    [Header("UI")]
     public GameOverPanel GameOverPanel;
+    public GameObject GamePausePanel;
 
     [Header("敌人相关")]
     public EnemyManager EnemyManager;
@@ -25,11 +29,11 @@ public class GameManager : MonoBehaviour
     
     private Player player = null;
     private float processScore;
-
+    private bool isPause = false;
     public void SetPlayer(Player player)
     {
         this.player = player;
-        MistakeHUDPanel.InitializeMistakePanel(this.player.maxAllowMistakeNumber);
+        MistakeHUDPanel.SetPlayer(player);
         MapChunkGenerator.SetPlayer(player);
         CameraFollow.SetPlayer(player.gameObject);
         EnemyManager.SetPlayer(player);
@@ -49,6 +53,13 @@ public class GameManager : MonoBehaviour
     {
         if (player == null)
             return;
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+            PauseGame();
+
+        if (isPause)
+            return;
+
         ScorePanel.AddScore((int)(everScoreAppend * processScore));
         MapChunkGenerator.GeneratorChunkUpdate();
         EnemyManager.GenEnemyUpdate();
@@ -63,9 +74,16 @@ public class GameManager : MonoBehaviour
         player = null;
         string scoreString = ScorePanel.GetScoreString();
         ScorePanel.PanelGo.SetActive(false);
-        MistakeHUDPanel.gameObject.SetActive(false);
+        PercentHUDPanel.SetActive(false);
         GameOverPanel.gameObject.SetActive(true);
         GameOverPanel.SetContentText(scoreString);
+    }
+
+    public void PauseGame()
+    {
+        GamePausePanel.SetActive(!GamePausePanel.activeSelf);
+        Time.timeScale = Time.timeScale == 1 ? 0 : 1;
+        isPause = !isPause;
     }
 
     public void RestartGame()
@@ -76,5 +94,10 @@ public class GameManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public bool IsPauseGame()
+    {
+        return isPause;
     }
 }

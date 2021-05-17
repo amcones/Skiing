@@ -9,37 +9,11 @@ public class MapChunk : MonoBehaviour
 
     public Bounds bounds;
 
-    [Header("Debug用区块显示")]
-    public LineRenderer LineRenderer;
-    public bool ShowChunkLine;
-    public float LineWidth = 0.00001f;
-    
-    private static readonly Vector2Int[] drawLineElem = { new Vector2Int(0, 1), new Vector2Int(1, 3), new Vector2Int(3, 2), new Vector2Int(2, 0) };
-
     private long id = -1;
     public long ID => id;
 
     private TileBase grondTile;
     private Tilemap tilemap;
-
-    //private void Start()
-    //{
-    //    LineRenderer.positionCount = 5;
-    //    LineRenderer.startWidth = LineWidth;
-    //    LineRenderer.endWidth = LineWidth;
-    //}
-
-    //private void Update()
-    //{
-    //    if (ShowChunkLine)
-    //    {
-    //        DrawRect();
-    //    }
-    //    else
-    //    {
-    //        LineRenderer.enabled = false;
-    //    }
-    //}
 
     /// <summary>
     /// 使用区域大小、中心来初始化区块，可设置其父物体
@@ -102,41 +76,5 @@ public class MapChunk : MonoBehaviour
                 tilemap.SetTile(new Vector3Int(fillPosStart.x + xPos, fillPosStart.y + yPos, 0), grondTile);
             }
         }
-    }
-
-    /// <summary>
-    /// 调试时使用，可以显示目前活跃的区块。
-    /// </summary>
-    /// <remarks>
-    /// 需要使用请将MapChunk的Start即Update取消注释
-    /// </remarks>
-    public void SetShowChunkLine(bool isShow)
-    {
-        ShowChunkLine = isShow;
-    }
-
-    /// <summary>
-    /// 同上
-    /// </summary>
-    public void DrawRect()
-    {
-        LineRenderer.enabled = true;
-        List<Vector3> vertex4Rect = new List<Vector3>();
-        float x = bounds.extents.x;
-        float y = bounds.extents.y;
-        vertex4Rect.Add(new Vector3(x, y));
-        vertex4Rect.Add(new Vector3(x, -y));
-        vertex4Rect.Add(new Vector3(-x, -y));
-        vertex4Rect.Add(new Vector3(-x, y));
-        foreach (Vector2Int lineElem in drawLineElem)
-        {
-            Debug.DrawLine(vertex4Rect[lineElem.x] + bounds.center, vertex4Rect[lineElem.y] + bounds.center);
-        }
-
-        for(int index = 0;index < 4;index ++)
-        {
-            LineRenderer.SetPosition(index, vertex4Rect[index] + bounds.center);
-        }
-        LineRenderer.SetPosition(4, vertex4Rect[0] + bounds.center);
     }
 }

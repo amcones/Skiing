@@ -70,7 +70,7 @@ public class MapChunkList
     /// 简单地获取一个区块
     /// </summary>
     /// <returns></returns>
-    public MapChunk GetUnuseChunk(bool isCreateNewIfEmpty)
+    private MapChunk GetUnuseChunk(bool isCreateNewIfEmpty)
     {
         if (unuseChunks.Count > 0)
         {
@@ -81,6 +81,7 @@ public class MapChunkList
         }
         if(isCreateNewIfEmpty)
         {
+            allChunkNumber++;
             return CreateChunk(chunkPrefab, Vector2.zero, parentObject, groundFillTile);
         }
         return null;

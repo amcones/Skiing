@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     enum PlayerState
     {
-        Sking,
+        Skiing,
         TouchBarrier,
         GameOver,
     }
@@ -41,6 +41,21 @@ public class Player : MonoBehaviour
         playerMove.enabled = true;
     }
 
+    public float GetCurrentSpeedUpTime()
+    {
+        return playerMove.GetSpeedUpTime();
+    }
+
+    public float GetSpeedUpWaitTime()
+    {
+        return playerMove.waitSpeedUpTime;
+    }
+
+    public void AddSpeedUpEvent(UnityAction action)
+    {
+        playerMove.addSpeedUpEvent.AddListener(action);
+    }
+
     /// <summary>
     /// 判断是否游戏结束
     /// </summary>
@@ -57,6 +72,11 @@ public class Player : MonoBehaviour
     public bool IsTouchBarrier()
     {
         return playerState == PlayerState.TouchBarrier;
+    }
+
+    public int GetAllowMistakeNumber()
+    {
+        return allowMistakeNumber;
     }
 
     /// <summary>
@@ -104,7 +124,7 @@ public class Player : MonoBehaviour
         if (IsGameOver())
             return;
 
-        playerState = PlayerState.Sking;
+        playerState = PlayerState.Skiing;
         playerMove.ResetState();
     }
 

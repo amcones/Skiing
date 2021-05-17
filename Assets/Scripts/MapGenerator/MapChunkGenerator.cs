@@ -34,9 +34,6 @@ public class MapChunkGenerator : MonoBehaviour
     [Tooltip("区块初始化生成时的位置")]
     public Vector2 ChunkInitializePosition = new Vector2(100, 100);
 
-    [Header("区块显示相关")]
-    public bool DrawChunk;
-
     [Header("障碍物生成设置")]
     [Tooltip("指定生成障碍物的预置体")]
     public List<GameObject> BarriesPrefabs;
@@ -85,7 +82,6 @@ public class MapChunkGenerator : MonoBehaviour
         {
             FollowTestTargetCreateChunk();
             FollowTestTargetDeleteChunk();
-            //DrawChunks();
         }
     }
 
@@ -93,33 +89,6 @@ public class MapChunkGenerator : MonoBehaviour
     {
         TestObject = target.gameObject;
         testTransform = target.transform;
-    }
-
-    /// <summary>
-    /// 调试时使用，可以显示目前活跃的区块。
-    /// </summary>
-    void DrawChunks()
-    {
-        if (DrawChunk)
-        {
-            if (mapChunkList.UsingChunks.Count > 0)
-            {
-                foreach (MapChunk chunk in mapChunkList.UsingChunks)
-                {
-                    chunk.SetShowChunkLine(true);
-                }
-            }
-        }
-        else
-        {
-            if (mapChunkList.UsingChunks.Count > 0)
-            {
-                foreach (MapChunk chunk in mapChunkList.UsingChunks)
-                {
-                    chunk.SetShowChunkLine(false);
-                }
-            }
-        }
     }
 
     bool IsLowerThanDistance(float target, float distance)
