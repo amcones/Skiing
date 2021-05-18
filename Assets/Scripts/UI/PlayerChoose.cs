@@ -19,6 +19,8 @@ public class PlayerChoose : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!gameManager.CanStart())
+            return;
         bool isLeftArrow = Input.GetKeyDown(KeyCode.LeftArrow);
         bool isRightArrow = Input.GetKeyDown(KeyCode.RightArrow);
         bool isSpace = Input.GetKeyDown(KeyCode.Space);

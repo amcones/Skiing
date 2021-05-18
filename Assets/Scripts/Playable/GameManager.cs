@@ -20,16 +20,22 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     public GameOverPanel GameOverPanel;
     public GameObject GamePausePanel;
+    public GameObject StartView;
+    public GameObject StartViewLoading;
 
     [Header("敌人相关")]
     public EnemyManager EnemyManager;
 
     [Header("其他")]
     public CameraFollow CameraFollow;
-    
+    public Mileage GameMileage;
+
     private Player player = null;
     private float processScore;
     private bool isPause = false;
+    private int startViewStatus = -1;
+    private bool canStart = false;
+
     public void SetPlayer(Player player)
     {
         this.player = player;
@@ -37,6 +43,7 @@ public class GameManager : MonoBehaviour
         MapChunkGenerator.SetPlayer(player);
         CameraFollow.SetPlayer(player.gameObject);
         EnemyManager.SetPlayer(player);
+        GameMileage.SetPlayer(player);
     }
 
     // Start is called before the first frame update
@@ -46,11 +53,26 @@ public class GameManager : MonoBehaviour
         MapChunkGenerator.InitializeGenerator();
         ScorePanel.InitializeScorePanel();
         EnemyManager.InitializeEnemyManager();
+        StartViewLoading.SetActive(false);
+        startViewStatus = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(startViewStatus == 0)
+        {
+            if (Input.anyKeyDown)
+            {
+                startViewStatus = 1;
+                canStart = true;
+                StartView.SetActive(false);
+            }
+            else
+            {
+                return;
+            }
+        }
         if (player == null)
             return;
 
@@ -63,6 +85,7 @@ public class GameManager : MonoBehaviour
         ScorePanel.AddScore((int)(everScoreAppend * processScore));
         MapChunkGenerator.GeneratorChunkUpdate();
         EnemyManager.GenEnemyUpdate();
+        GameMileage.MileageUpdate();
         if(processScore < 1.0f)
         {
             processScore += gradualScoreRate;
@@ -99,5 +122,10 @@ public class GameManager : MonoBehaviour
     public bool IsPauseGame()
     {
         return isPause;
+    }
+
+    public bool CanStart()
+    {
+        return canStart;
     }
 }
