@@ -31,7 +31,7 @@ public class Flag : MonoBehaviour
         if (!isReach)
         {
             transform.position = new Vector2(playerTransform.position.x, transform.position.y);
-            if (playerTransform.position.y <= transform.position.y)
+            if (playerTransform.position.y <= transform.position.y && !isReach)
             {
                 score.AddScore(150);
                 isReach = true;

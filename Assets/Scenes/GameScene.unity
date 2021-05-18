@@ -1714,8 +1714,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 616399619}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -9.82, y: 0.27, z: 0}
+  m_LocalScale: {x: 1.42, y: 1.42, z: 1}
   m_Children: []
   m_Father: {fileID: 1045666498}
   m_RootOrder: 0
@@ -1760,12 +1760,12 @@ SpriteRenderer:
   m_SortingLayerID: 1603800091
   m_SortingLayer: 8
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e836ec1b2f2171b40b19771d92bd4663, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 75c5c33441f20f847afc2a7074dc5916, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.11, y: 0.2}
+  m_Size: {x: 1, y: 2.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -4606,6 +4606,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ece050e3cd58f7498f1130c92dc748a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addScore: 150
+  score: {fileID: 1021241964}
 --- !u!4 &1045666498
 Transform:
   m_ObjectHideFlags: 0
@@ -4614,7 +4616,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045666496}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 22, z: 0}
+  m_LocalPosition: {x: -13.13, y: 25.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 616399620}
@@ -36685,8 +36687,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1849333228}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalPosition: {x: 9.81, y: 0.32, z: 0}
+  m_LocalScale: {x: -1.42, y: 1.42, z: 1}
   m_Children: []
   m_Father: {fileID: 1045666498}
   m_RootOrder: 1
@@ -36731,12 +36733,12 @@ SpriteRenderer:
   m_SortingLayerID: 1603800091
   m_SortingLayer: 8
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e836ec1b2f2171b40b19771d92bd4663, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 75c5c33441f20f847afc2a7074dc5916, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.11, y: 0.2}
+  m_Size: {x: 1, y: 2.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -36854,6 +36856,11 @@ MonoBehaviour:
   - {fileID: 1434149376276027627, guid: 39514f3c956939c428b705dc34501b19, type: 3}
   - {fileID: 2374251554240064613, guid: b2ec7cea149c19d44b0c1e94f06a6be8, type: 3}
   - {fileID: 3309740470190242908, guid: 02269a2e144d6734fac905ba2d5097e9, type: 3}
+  - {fileID: 3309740470190242908, guid: 5da6fdc48c591ed42a18177b3a1536c5, type: 3}
+  - {fileID: 3309740470190242908, guid: 1972f3d8cbd82054a9c541685137a8f1, type: 3}
+  - {fileID: 3309740470190242908, guid: 8944e22dd921f0a4c806782bf27ef972, type: 3}
+  - {fileID: 3309740470190242908, guid: 4d9c40d377533c14eae01e900ae3e2d5, type: 3}
+  - {fileID: 3309740470190242908, guid: f1fd85d90cd407c4e9d80cdab44e5a6d, type: 3}
   ObstacleParent: {fileID: 1240483173}
   ObstacleGenerateNumberForElem: 50
   ObstacleInitilizePosition: {x: 1000, y: 1000}

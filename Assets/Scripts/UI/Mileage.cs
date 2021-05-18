@@ -28,7 +28,6 @@ public class Mileage : MonoBehaviour
                 MileageFlag.Initialize(-genFlagMileage);
                 genFlagMileage += appendFlagMileage;
                 appendFlagMileage += appendFlagMileage * multiplyFlagMileage;
-                Debug.Log($"Gen Flag:{genFlagMileage}");
             }
         }
     }

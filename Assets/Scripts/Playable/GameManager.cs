@@ -64,9 +64,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.anyKeyDown)
             {
-                startViewStatus = 1;
-                canStart = true;
-                StartView.SetActive(false);
+                StartCoroutine(WaitForStart(0.5f));
             }
             else
             {
@@ -127,5 +125,13 @@ public class GameManager : MonoBehaviour
     public bool CanStart()
     {
         return canStart;
+    }
+
+    IEnumerator WaitForStart(float seconds)
+    {
+        startViewStatus = 1;
+        yield return new WaitForSeconds(seconds);
+        canStart = true;
+        StartView.SetActive(false);
     }
 }
