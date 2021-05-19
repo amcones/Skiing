@@ -7,7 +7,7 @@ public class PlayerChoose : MonoBehaviour
 {
     public Transform PlayerChoosePanel;
     public GameObject ChooseButtonGroup;
-
+    public GameObject StartButtonGroup;
     public List<Player> Players;
 
     public GameManager gameManager;
@@ -19,6 +19,8 @@ public class PlayerChoose : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!gameManager.CanStart())
+            return;
         bool isLeftArrow = Input.GetKeyDown(KeyCode.LeftArrow);
         bool isRightArrow = Input.GetKeyDown(KeyCode.RightArrow);
         bool isSpace = Input.GetKeyDown(KeyCode.Space);
@@ -45,6 +47,7 @@ public class PlayerChoose : MonoBehaviour
 
         StartGameEvent.Invoke();
         ChooseButtonGroup.SetActive(false);
+        StartButtonGroup.SetActive(false);
         this.gameObject.SetActive(false);
     }
 

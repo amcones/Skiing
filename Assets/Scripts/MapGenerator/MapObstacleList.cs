@@ -39,7 +39,7 @@ public class MapObstacleList
         return obstacle;
     }
 
-    public MapObstacle GetUnuseObstacle()
+    private MapObstacle GetUnuseObstacle()
     {
         if(unuseObstacle.Count > 0)
         {

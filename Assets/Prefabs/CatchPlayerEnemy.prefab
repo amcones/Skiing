@@ -136,5 +136,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   disappearTime: 10
-  VelocitySize: 18
+  VelocitySize: 15
   rigidbody2D: {fileID: 757252471860240372}
