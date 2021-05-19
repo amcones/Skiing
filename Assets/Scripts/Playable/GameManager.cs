@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [Header("其他")]
     public CameraFollow CameraFollow;
     public Mileage GameMileage;
+    public AudioManager AudioManager;
 
     private Player player = null;
     private float processScore;
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.anyKeyDown)
             {
+                AudioManager.PlayEnter();
                 StartCoroutine(WaitForStart(0.5f));
             }
             else
