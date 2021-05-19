@@ -17,7 +17,6 @@ public class Enemy : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
-
             player.GameOver();
         }
     }
