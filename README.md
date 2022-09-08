@@ -1,2 +1,2 @@
 # skiing
-the repository of skiing
+the repository of game "Skiing"
